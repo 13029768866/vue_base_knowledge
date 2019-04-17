@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>demo1</title>
+    <link rel="stylesheet" href="./css/demo1.css">
+</head>
+
+<body>
+    <div id="app">
+        <!-- 图片 -->
+        <div id="bag" :class="{ burst: isBurst }">
+        </div>
+        <!-- 进度显示 -->
+        <div id="break_process">
+            <div :style="{ width: process + '%'}"></div>
+        </div>
+        <!-- 控制按钮 -->
+        <div id="controls">
+            <button @click.prevent='handleClickTrack' v-show='!isBurst'>蓄力一击</button>
+            <button @click.prevent='handleClickReset'>重新开始</button>
+        </div>
+    </div>
+</body>
+<script src="./js/Vue.min.js"></script>
+<script src="./js/app.js"></script>
+
+</html>
