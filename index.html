@@ -8,10 +8,18 @@
   <title>Document</title>
 </head>
 <body>
-  Hello Wzj
-  <script src="dist/umd/vue.js"></script>
-  <script>
-    console.log(Vue);
-  </script>
+<div id="app">WZJNB</div>
+<script src="dist/umd/vue.js"></script>
+<script>
+  let vm = new Vue({
+    el:'#app',
+    data(){
+      return {
+        a: 1
+      }
+    }
+  });
+  console.log('last',vm.$options);
+</script>
 </body>
 </html>
