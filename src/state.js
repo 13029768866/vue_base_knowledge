@@ -2,6 +2,7 @@ import {observer} from "./observer/index";
 
 export function initState(vm) {
   let opts = vm.$options;
+  /* 依照顺序,依次初始化 */
   if(opts.props){
     initProps(vm);
   }
@@ -17,8 +18,8 @@ export function initState(vm) {
   if(opts.watch){
     initWatch(vm);
   }
-
 }
+
 
 function initProps(vm) {
 
@@ -27,12 +28,11 @@ function initMethods(vm) {
 
 }
 function initData(vm) {
+  /* 1、类型判断 */
   let data = vm.$options.data;
-  /* 类型处理 */
-  data = typeof data === 'function'?data.call(vm): data;
+  data = typeof data === 'function'? data.call(vm) : data;
 
-  /* 数据劫持 */
-  observer(data)
+  observer(data);
 
 }
 function initComputed(vm) {

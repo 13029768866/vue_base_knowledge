@@ -10,6 +10,7 @@
 
   function initState(vm) {
     var opts = vm.$options;
+    /* 依照顺序,依次初始化 */
 
     if (opts.props) ;
 
@@ -25,21 +26,17 @@
   }
 
   function initData(vm) {
+    /* 1、类型判断 */
     var data = vm.$options.data;
-    /* 类型处理 */
-
     data = typeof data === 'function' ? data.call(vm) : data;
-    /* 数据劫持 */
-
     observer(data);
   }
 
   function initMixin(Vue) {
-    /* 初始化$options */
     Vue.prototype._init = function (options) {
       var vm = this;
       vm.$options = options;
-      /* 状态初始化(props,methods,computed...)*/
+      /* 状态初始化 */
 
       initState(vm);
     };
