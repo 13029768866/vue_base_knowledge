@@ -4,10 +4,6 @@
   (global = typeof globalThis !== 'undefined' ? globalThis : global || self, global.Vue = factory());
 }(this, (function () { 'use strict';
 
-  function observer(data) {
-    console.log('dataInit:', data);
-  }
-
   function initState(vm) {
     var opts = vm.$options;
     /* 依照顺序,依次初始化 */
@@ -29,7 +25,6 @@
     /* 1、类型判断 */
     var data = vm.$options.data;
     data = typeof data === 'function' ? data.call(vm) : data;
-    observer(data);
   }
 
   function initMixin(Vue) {
