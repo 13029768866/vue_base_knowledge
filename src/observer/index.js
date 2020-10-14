@@ -2,13 +2,30 @@ class Observer {
   constructor(value){
     this.walk(value)
   }
-  walk(){
+  walk(data){
+    let keys = Object.keys(data);
+    keys.forEach(key => {
+      defineReactive(data,key,data[key])
+    })
 
   }
+}
+function defineReactive(obj,attr,value) {
+  Object.defineProperty(obj,attr,{
+    get() {
+      console.log('用户获取');
+      return value;
+    },
+    set(newValue){
+      console.log('用户设置');
+      if(newValue === value ) return;
+      value = newValue;
+    }
+  })
 }
 
 export function observer(data) {
   /* 类型判断 */
-  if(typeof data === 'object' || data === null) return;
+  if(typeof data !== 'object' || data === null) return;
   return new Observer(data);
 }
