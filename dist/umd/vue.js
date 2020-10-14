@@ -63,6 +63,8 @@
   }();
 
   function defineReactive(obj, attr, value) {
+    /* 递归处理多层级 */
+    observer(value);
     Object.defineProperty(obj, attr, {
       get: function get() {
         console.log('用户获取');
@@ -71,6 +73,7 @@
       set: function set(newValue) {
         console.log('用户设置');
         if (newValue === value) return;
+        observer(newValue);
         value = newValue;
       }
     });
