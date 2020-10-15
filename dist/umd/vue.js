@@ -42,14 +42,63 @@
     return Constructor;
   }
 
+  var oldArrayPrototype = Array.prototype;
+  var newArrayPrototype = Object.create(oldArrayPrototype);
+  var methods = ['push', 'pop', 'shift', 'unshift', 'reverse', 'sort', 'splice'];
+  methods.forEach(function (method) {
+    newArrayPrototype[method] = function () {
+      for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+        args[_key] = arguments[_key];
+      }
+
+      var res = oldArrayPrototype[method].apply(this, args);
+      var insert;
+      var ob = this.__ob__;
+
+      switch (method) {
+        case 'push':
+        case 'unshift':
+          insert = args;
+          break;
+
+        case 'splice':
+          insert = args.slice(2);
+          break;
+      }
+
+      if (insert) ob.observerArray(insert);
+      return res;
+    };
+  });
+
   var Observer = /*#__PURE__*/function () {
     function Observer(value) {
       _classCallCheck(this, Observer);
 
-      this.walk(value);
+      Object.defineProperty(value, '__ob__', {
+        enumerable: false,
+        // 不可枚举,隐藏属性,不能被循环
+        configurable: false,
+        // 不能被设置
+        value: this
+      });
+
+      if (Array.isArray(value)) {
+        value.__proto__ = newArrayPrototype;
+        this.observerArray(value);
+      } else {
+        this.walk(value);
+      }
     }
 
     _createClass(Observer, [{
+      key: "observerArray",
+      value: function observerArray(data) {
+        data.forEach(function (item) {
+          observer(item);
+        });
+      }
+    }, {
       key: "walk",
       value: function walk(data) {
         var keys = Object.keys(data);
@@ -81,7 +130,8 @@
 
   function observer(data) {
     /* 类型判断 */
-    if (_typeof(data) !== 'object' || data === null) return;
+    if (_typeof(data) !== 'object' || data === null) return data;
+    if (data.__ob__) return data;
     return new Observer(data);
   }
 

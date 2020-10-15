@@ -1,6 +1,26 @@
+import {newArrayPrototype} from "../array";
+
 class Observer {
   constructor(value){
-    this.walk(value)
+    Object.defineProperty(value,'__ob__',{
+      enumerable: false,      // 不可枚举,隐藏属性,不能被循环
+      configurable: false,    // 不能被设置
+      value: this
+    });
+
+
+    if(Array.isArray(value)){
+      value.__proto__ = newArrayPrototype;
+      this.observerArray(value)
+    }else{
+      this.walk(value)
+    }
+
+  }
+  observerArray(data){
+    data.forEach(item => {
+      observer(item);
+    })
   }
   walk(data){
     let keys = Object.keys(data);
@@ -29,6 +49,7 @@ function defineReactive(obj,attr,value) {
 
 export function observer(data) {
   /* 类型判断 */
-  if(typeof data !== 'object' || data === null) return;
+  if(typeof data !== 'object' || data === null) return data;
+  if(data.__ob__) return data;
   return new Observer(data);
 }

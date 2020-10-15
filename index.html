@@ -15,17 +15,13 @@
     el:'#app',
     data(){
       return {
-        a: {
-          a:{
-            a:1
-          }
-        }
+        arr:[{a:1}]
       }
     }
   });
-  // console.log('last',vm._data.a.a.a);
-  vm._data.a = {b: 1};
-  vm._data.a.b = 100;
+  vm._data.arr.push({b:1})
+  vm._data.arr[1].b = 100;
+  console.log(vm);
 
 </script>
 </body>
