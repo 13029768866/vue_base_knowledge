@@ -30,7 +30,7 @@ function initMethods(vm) {
 function initData(vm) {
   /* 1、类型判断 */
   let data = vm.$options.data;
-  data = typeof data === 'function'? data.call(vm) : data;
+  vm._data = data = typeof data === 'function'? data.call(vm) : data;
 
   observer(data);
 

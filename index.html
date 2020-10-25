@@ -15,11 +15,14 @@
     el:'#app',
     data(){
       return {
-        a: 1
+        arr:[{a:1}]
       }
     }
   });
-  console.log('last',vm.$options);
+  vm._data.arr.push({b:1})
+  vm._data.arr[1].b = 100;
+  console.log(vm);
+
 </script>
 </body>
 </html>
