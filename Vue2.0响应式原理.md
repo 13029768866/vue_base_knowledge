@@ -8,7 +8,7 @@
 4. @babel/preset-env(babel预设)
 5. rollup-plugin-serve(启动本地服务)
 
-## 二、Vue 
+## 二、Vue  
 
 选择构造函数写法而不用class的原因是为了更好的进行同类型方法文件拆分。
 
