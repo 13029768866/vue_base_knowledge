@@ -2,6 +2,8 @@ import {newArrayPrototype} from "../array";
 
 class Observer {
   constructor(value){
+
+    /* 添加是否被观测过的表示‘__ob__’ */
     Object.defineProperty(value,'__ob__',{
       enumerable: false,      // 不可枚举,隐藏属性,不能被循环
       configurable: false,    // 不能被设置
@@ -9,10 +11,14 @@ class Observer {
     });
 
 
+    /* 数组处理 */
     if(Array.isArray(value)){
+      // 函数劫持,切片编程
       value.__proto__ = newArrayPrototype;
+      // 观测数组中的对象类型
       this.observerArray(value)
     }else{
+      /* 对象处理 */
       this.walk(value)
     }
 

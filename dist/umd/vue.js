@@ -42,9 +42,14 @@
     return Constructor;
   }
 
+  /* 数组原型 */
   var oldArrayPrototype = Array.prototype;
+  /* 基于数组原型创造一个Vue数组原型 */
+
   var newArrayPrototype = Object.create(oldArrayPrototype);
   var methods = ['push', 'pop', 'shift', 'unshift', 'reverse', 'sort', 'splice'];
+  /* 7个改变原数组的方法重写 */
+
   methods.forEach(function (method) {
     newArrayPrototype[method] = function () {
       for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
@@ -54,6 +59,7 @@
       var res = oldArrayPrototype[method].apply(this, args);
       var insert;
       var ob = this.__ob__;
+      /* 新增方法判断 */
 
       switch (method) {
         case 'push':
@@ -65,6 +71,8 @@
           insert = args.slice(2);
           break;
       }
+      /* 新增的值增加观测 */
+
 
       if (insert) ob.observerArray(insert);
       return res;
@@ -75,6 +83,7 @@
     function Observer(value) {
       _classCallCheck(this, Observer);
 
+      /* 添加是否被观测过的表示‘__ob__’ */
       Object.defineProperty(value, '__ob__', {
         enumerable: false,
         // 不可枚举,隐藏属性,不能被循环
@@ -82,11 +91,15 @@
         // 不能被设置
         value: this
       });
+      /* 数组处理 */
 
       if (Array.isArray(value)) {
-        value.__proto__ = newArrayPrototype;
+        // 函数劫持,切片编程
+        value.__proto__ = newArrayPrototype; // 观测数组中的对象类型
+
         this.observerArray(value);
       } else {
+        /* 对象处理 */
         this.walk(value);
       }
     }
@@ -170,10 +183,9 @@
   }
 
   function Vue(options) {
-    /* 1、options初始化 */
+    //  2、执行options初始化
     this._init(options);
-  }
-  /* 初始化(原型上挂载方法) */
+  } // 1、原型上挂载初始化方法
 
 
   initMixin(Vue);
