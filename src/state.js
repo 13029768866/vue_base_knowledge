@@ -1,22 +1,22 @@
 import {observer} from "./observer/index";
 
 export function initState(vm) {
-  let opts = vm.$options;
-  /* 依照顺序,依次初始化 */
-  if(opts.props){
-    initProps(vm);
+  const opt = vm.$options;
+  /* 1、根据顺序初始化状态 */
+  if(opt.props){
+    initProps(vm)
   }
-  if(opts.methods){
-    initMethods(vm);
+  if(opt.methods){
+    initMethods(vm)
   }
-  if(opts.data){
-    initData(vm);
+  if(opt.data){
+    initData(vm)
   }
-  if(opts.computed){
-    initComputed(vm);
+  if(opt.computed){
+    initComputed(vm)
   }
-  if(opts.watch){
-    initWatch(vm);
+  if(opt.watch){
+    initWatch(vm)
   }
 }
 
@@ -28,12 +28,12 @@ function initMethods(vm) {
 
 }
 function initData(vm) {
-  /* 1、类型判断 */
+  /* 1、类型判断获取data */
   let data = vm.$options.data;
-  vm._data = data = typeof data === 'function'? data.call(vm) : data;
+  vm._data = data = typeof data === 'function'?data.call(vm): data;
 
+  /* 2、进行数据劫持,添加响应式 */
   observer(data);
-
 }
 function initComputed(vm) {
 

@@ -149,34 +149,37 @@
   }
 
   function initState(vm) {
-    var opts = vm.$options;
-    /* 依照顺序,依次初始化 */
+    var opt = vm.$options;
+    /* 1、根据顺序初始化状态 */
 
-    if (opts.props) ;
+    if (opt.props) ;
 
-    if (opts.methods) ;
+    if (opt.methods) ;
 
-    if (opts.data) {
+    if (opt.data) {
       initData(vm);
     }
 
-    if (opts.computed) ;
+    if (opt.computed) ;
 
-    if (opts.watch) ;
+    if (opt.watch) ;
   }
 
   function initData(vm) {
-    /* 1、类型判断 */
+    /* 1、类型判断获取data */
     var data = vm.$options.data;
     vm._data = data = typeof data === 'function' ? data.call(vm) : data;
+    /* 2、进行数据劫持,添加响应式 */
+
     observer(data);
   }
 
   function initMixin(Vue) {
     Vue.prototype._init = function (options) {
+      /* 1、options初始化 */
       var vm = this;
       vm.$options = options;
-      /* 状态初始化 */
+      /* 2、state初始化 */
 
       initState(vm);
     };
