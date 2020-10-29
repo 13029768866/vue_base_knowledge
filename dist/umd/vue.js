@@ -148,6 +148,17 @@
     return new Observer(data);
   }
 
+  function proxy(vm, data, key) {
+    Object.defineProperty(vm, key, {
+      get: function get() {
+        return vm[data][key];
+      },
+      set: function set(newValue) {
+        vm[data][key] = newValue;
+      }
+    });
+  }
+
   function initState(vm) {
     var opt = vm.$options;
     /* 1、根据顺序初始化状态 */
@@ -169,7 +180,14 @@
     /* 1、类型判断获取data */
     var data = vm.$options.data;
     vm._data = data = typeof data === 'function' ? data.call(vm) : data;
+    /* 方便用户体验代理 */
+
+    for (var key in data) {
+      console.log(key);
+      proxy(vm, '_data', key);
+    }
     /* 2、进行数据劫持,添加响应式 */
+
 
     observer(data);
   }
