@@ -183,7 +183,6 @@
     /* 方便用户体验代理 */
 
     for (var key in data) {
-      console.log(key);
       proxy(vm, '_data', key);
     }
     /* 2、进行数据劫持,添加响应式 */
@@ -200,6 +199,32 @@
       /* 2、state初始化 */
 
       initState(vm);
+      /* */
+
+      if (vm.$options.el) {
+        vm.$mount(vm.$options.el);
+      }
+    };
+
+    Vue.prototype.$mount = function (el) {
+      /* 挂载操作 */
+      var vm = this;
+      var opts = vm.$options;
+      el = document.querySelector(el);
+      console.log(el);
+      /* 根据顺序render => template => el */
+
+      if (!opts.render) {
+        // 没有render, template 转化成render
+        var template = opts.template;
+
+        if (!template && el) {
+          /* outerHTML元素及其后代序列化HTML片段 */
+          template = el.outerHTML;
+        }
+
+        console.log(template);
+      }
     };
   }
 

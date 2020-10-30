@@ -36,7 +36,6 @@ function initData(vm) {
 
   /* 方便用户体验代理 */
   for(let key in data){
-    console.log(key);
     proxy(vm,'_data', key);
   }
   /* 2、进行数据劫持,添加响应式 */
