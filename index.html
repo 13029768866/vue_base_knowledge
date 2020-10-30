@@ -8,16 +8,30 @@
   <title>ZF学习</title>
 </head>
 <body>
-<div id="app"></div>
+<div id="app">
+  {{arr}}
+  <ul>
+    <li>{{person.name}}</li>
+    <li>{{person.age}}</li>
+  </ul>
+</div>
 <script src="dist/umd/vue.js"></script>
 <script>
   let vm = new Vue({
     el:'#app',
     data(){
       return {
-        arr:[{a:1}]
+        arr: [1,2,3],
+        person:{
+          name: 'wzj',
+          age: 18
+        }
       }
-    }
+    },
+    /*render(h){
+      return h('div',{id: 'a'}, 'hello')
+    },
+    template:` <div id="a">hello</div>`*/
   });
   /* 问题: 数组中对象的响应式*/
   // arr:[{a:1}]
@@ -25,10 +39,24 @@
   console.log(vm._data);*/
 
   /* 问题：数组中添加新对象 */
-  vm._data.arr.push({b:1})
+  /*vm._data.arr.push({b:1})
   vm._data.arr[1].b = 100;
-  console.log(vm);
+  console.log(vm);*/
 
+  /*console.log(vm.arr);
+  vm.arr = 100;*/
+
+
+  /* 用户使用vm._data体验不好 */
+
+  /* 渲染操作*/
+  /*
+  * 1、先找render方法
+  * 2、没有render方法查找template
+  * 3、都没有找当前el制定的元素中内容
+  * */
+
+  /* ast解析template 转化成=> render函数 */
 </script>
 </body>
 </html>
