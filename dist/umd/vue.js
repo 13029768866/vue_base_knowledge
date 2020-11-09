@@ -191,6 +191,70 @@
     observer(data);
   }
 
+  // <div>hello {{name}} <span>world</span></div>
+
+  /*{
+      tag: 'div',
+      parent: null,
+      type: 1,
+      attr: [],
+      children:[
+      ]
+  }*/
+
+  /* 1、匹配标签名字 */
+  // 英文字符开头下划线,可有可无的‘-’
+  var ncname = "[a-zA-Z_][\\-\\.0-9_a-zA-Z]*";
+  /* 2、匹配命名空间标签 my:xxx */
+
+  var qnameCapture = "((?:".concat(ncname, "\\:)?").concat(ncname, ")");
+  /* 3、匹配开始标签 <tag */
+
+  var startTagOpen = new RegExp("^<".concat(qnameCapture));
+
+  function parseHTML(html) {
+    /* 根据正则匹配,匹配成功删除对应长度,直到字符串为空 */
+    while (html) {
+      /* 获取第一个字符判断是否是标签*/
+      var textEnd = html.indexOf('<');
+
+      if (textEnd == 0) {
+        console.log('开始');
+        parseStartTag();
+        break;
+      }
+    }
+    /* 解析完前进字符串 */
+
+    function advance(n) {
+      html = html.substring(n);
+    }
+    /* 解析开头标签 */
+
+
+    function parseStartTag() {
+      var start = html.match(startTagOpen);
+
+      if (start) {
+        var match = {
+          tagName: start[1],
+          attr: []
+        };
+        advance(start[0].length);
+        console.log(html);
+      }
+    }
+  }
+
+  function compileToFunctions(template) {
+    /* html模板 => render函数 */
+
+    /* ast语法树可以描述js,css,dom  虚拟dom只能描述dom  */
+    // 1、需要将html代码转换成“ast”语法树  可以用AST树来描述语言本身（描述代码的）
+    // 前端必须要掌握的数据结构（树）
+    var ast = parseHTML(template); // 2、通过AST语法树 重新反编译成代码
+  }
+
   function initMixin(Vue) {
     Vue.prototype._init = function (options) {
       /* 1、options初始化 */
